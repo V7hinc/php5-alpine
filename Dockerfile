@@ -16,8 +16,7 @@ COPY php5-fpm.service /etc/service/php5-fpm/run
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-RUN sed -i -e 's/user\s*=\s*nobody/user = nginx/g' /etc/php5/php-fpm.conf && \
-    sed -i -e 's/group\s*=\s*nobody/group = nginx/g' /etc/php5/php-fpm.conf
+RUN sed -i -e 's/user\s*=\s*nobody/user = nginx/g' -e 's/group\s*=\s*nobody/group = nginx/g' /etc/php5/php-fpm.conf
 
 VOLUME ["/var/lib/nginx/html"]
 
