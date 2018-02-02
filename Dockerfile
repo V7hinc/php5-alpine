@@ -8,20 +8,16 @@ RUN apk add --no-cache --update-cache tzdata runit nginx php5-fpm php5-common \
     php5-curl php5-gd php5-gettext php5-iconv php5-intl php5-json php5-mcrypt php5-xml php5-xmlreader php5-zlib && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
-RUN mkdir -p /run/nginx /etc/service/nginx /etc/service/php5-fpm
+ADD rootfs /
 
-COPY nginx.service /etc/service/nginx/run
-
-COPY php5-fpm.service /etc/service/php5-fpm/run
-
-COPY default.conf /etc/nginx/conf.d/default.conf
-
-RUN sed -i -e 's/user\s*=\s*nobody/user = nginx/g' -e 's/group\s*=\s*nobody/group = nginx/g' /etc/php5/php-fpm.conf && \
-    chmod +x /etc/service/nginx/run /etc/service/php5-fpm/run
+RUN sed -i -e 's/user\s*=\s*nobody/user = nginx/g' \
+           -e 's/group\s*=\s*nobody/group = nginx/g' /etc/php5/php-fpm.conf && \
+    find /etc/service -type f -name 'run' -exec chmod +x {} \; && \
+    mkdir -p /run/nginx
 
 VOLUME ["/var/lib/nginx/html"]
 
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["runsvdir", "/etc/service"]
 
