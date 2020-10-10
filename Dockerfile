@@ -1,4 +1,4 @@
-FROM daocloud.io/library/alpine:3.6
+FROM alpine:3.6
 
 RUN cp /etc/apk/repositories /etc/apk/repositories.old && \
     echo 'https://mirrors.aliyun.com/alpine/v3.6/main/' >/etc/apk/repositories && \
